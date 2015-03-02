@@ -1,6 +1,5 @@
 var fs      = require('fs')
 ,   Stream  = require('stream')
-,   co      = require('co')
 ,   Promise = require('bluebird')
 ,   temp    = require('temp')
 ,   ffmpeg  = require('fluent-ffmpeg')

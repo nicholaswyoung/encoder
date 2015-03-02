@@ -1,6 +1,6 @@
 {
   "name": "encoder",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "FFMPEG-powered media encoder with Promises.",
   "main": "index.js",
   "scripts": {},
@@ -25,6 +25,7 @@
     "bluebird": "^2.9.13",
     "co": "^4.4.0",
     "fluent-ffmpeg": "^2.0.0-rc3",
+    "lodash.assign": "^3.0.0",
     "temp": "^0.8.1"
   }
 }

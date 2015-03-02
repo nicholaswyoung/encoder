@@ -4,6 +4,7 @@ var fs      = require('fs')
 ,   Promise = require('bluebird')
 ,   temp    = require('temp')
 ,   ffmpeg  = require('fluent-ffmpeg')
+,   assign  = require('lodash.assign')
 ,   Encoder;
 
 /**
@@ -29,22 +30,20 @@ Encoder = function (input, options) {
 };
 
 Encoder.prototype.prime = function () {
-  var self = this;
+  var self    = this
+  ,   outputs = [];
 
   for (var key in this.formats) {
-    this.outputs.push(new Promise(function (resolve, reject) {
-      temp.open({ suffix: '.' + key }, function (err, info) {
-        if (err) return reject(err);
-
-        resolve({
-          path: info.path,
-          meta: self.formats[key]
-        });
-      });
+    outputs.push(assign(self.formats[key], {
+      file: temp.openAsync({ suffix: '.' + key })
     }));
   }
 
-  return Promise.all(this.outputs);
+  self.outputs = Promise.map(outputs, function (output) {
+    return Promise.props(output)
+  });
+
+  return self.outputs;
 };
 
 Encoder.prototype.encode = function () {
@@ -56,7 +55,7 @@ Encoder.prototype.encode = function () {
 
       outputs.forEach(function (output) {
         proc
-          .output(output.path)
+          .output(output.file.path)
           .audioChannels(output.channels || 2)
 
         if (output.codec) proc.audioCodec(output.codec);
@@ -67,10 +66,10 @@ Encoder.prototype.encode = function () {
 
       proc
         .on('progress', function (progress) {
-          self.emit('progress')
+          //self.emit('progress')
         })
         .on('message', function (message) {
-          self.emit('message')
+          //self.emit('message')
         })
         .on('error', function (error) {
           return reject(error);
@@ -85,7 +84,7 @@ Encoder.prototype.encode = function () {
 
 Encoder.prototype.cleanup = function () {
   return Promise.map(this.outputs, function (output) {
-    return fs.unlinkAsync(output.path);
+    return fs.unlinkAsync(output.file.path);
   });
 }
 

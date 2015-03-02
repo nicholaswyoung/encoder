@@ -39,6 +39,7 @@ Encoder.prototype.prime = function () {
 
   for (var key in this.formats) {
     outputs.push(assign(self.formats[key], {
+      format: key,
       file: temp.openAsync({ suffix: '.' + key })
     }));
   }

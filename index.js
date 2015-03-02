@@ -1,5 +1,6 @@
 var fs      = require('fs')
 ,   Stream  = require('stream')
+,   Event   = require('events')
 ,   Promise = require('bluebird')
 ,   temp    = require('temp')
 ,   ffmpeg  = require('fluent-ffmpeg')
@@ -16,6 +17,8 @@ temp = Promise.promisifyAll(temp);
  * Encoder class
  */
 Encoder = function (input, options) {
+  Event.EventEmitter.call(this);
+
   options = options || {};
 
   this.formats = options.formats || {};
@@ -27,6 +30,8 @@ Encoder = function (input, options) {
 
   return this;
 };
+
+require('util').inherits(Encoder, Event.EventEmitter);
 
 Encoder.prototype.prime = function () {
   var self    = this
@@ -65,10 +70,10 @@ Encoder.prototype.encode = function () {
 
       proc
         .on('progress', function (progress) {
-          //self.emit('progress')
+          self.emit('progress')
         })
         .on('message', function (message) {
-          //self.emit('message')
+          self.emit('message')
         })
         .on('error', function (error) {
           return reject(error);

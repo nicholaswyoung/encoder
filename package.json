@@ -1,6 +1,6 @@
 {
   "name": "encoder",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "FFMPEG-powered media encoder with Promises.",
   "main": "index.js",
   "scripts": {},

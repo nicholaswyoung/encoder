@@ -59,9 +59,9 @@ Encoder.prototype.encode = function () {
           .output(output.path)
           .audioChannels(output.channels || 2)
 
-        if (output.codec) proc.audioCodec(output.data.codec);
-        if (output.bitrate) proc.audioBitrate(output.data.bitrate);
-        if (output.frequency) proc.audioFrequency(output.data.frequency);
+        if (output.codec) proc.audioCodec(output.codec);
+        if (output.bitrate) proc.audioBitrate(output.bitrate);
+        if (output.frequency) proc.audioFrequency(output.frequency);
         if (output.options) proc.outputOptions(output.options);
       });
 

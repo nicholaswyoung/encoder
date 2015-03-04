@@ -56,6 +56,10 @@ Encoder.prototype.encode = function () {
 
   return self.prime().then(function (outputs) {
     return new Promise(function (resolve, reject) {
+      if (!outputs.length) {
+        return reject(new Error('You must supply output formats.'));
+      }
+
       var proc = ffmpeg(self.through);
 
       outputs.forEach(function (output) {

@@ -1,5 +1,7 @@
 # Encoder
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/nicholaswyoung/encoder.svg)](https://greenkeeper.io/)
+
 A simple wrapper around ffmpeg with a clean, Promises-based API.
 
 ## Example
